@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use ProjetoLaravel\Client;
 use ProjetoLaravel\Http\Requests;
 use ProjetoLaravel\Http\Controllers\Controller;
+use Symfony\Component\Console\Input\Input;
 
 class ClientController extends Controller
 {
@@ -33,7 +34,7 @@ class ClientController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -44,7 +45,7 @@ class ClientController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -55,7 +56,7 @@ class ClientController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -66,19 +67,28 @@ class ClientController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        //
+        $client = Client::find($id);
+        $client->name = $request->input('name');
+        $client->responsible = $request->input('responsible');
+        $client->email = $request->input('email');
+        $client->phone = $request->input('phone');
+        $client->address = $request->input('address');
+        $client->obs = $request->input('obs');
+        $client->save();
+
+        return $client;
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
