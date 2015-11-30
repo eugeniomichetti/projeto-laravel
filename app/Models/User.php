@@ -1,6 +1,6 @@
 <?php
 
-namespace ProjetoLaravel;
+namespace ProjetoLaravel\Models;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;

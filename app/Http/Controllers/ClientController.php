@@ -18,7 +18,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        return \ProjetoLaravel\Client::all();
+        return \ProjetoLaravel\Models\Client::all();
     }
 
     /**
@@ -39,7 +39,7 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        return \ProjetoLaravel\Client::create($request->all());
+        return \ProjetoLaravel\Models\Client::create($request->all());
     }
 
     /**
