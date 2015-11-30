@@ -145,6 +145,7 @@ return [
         ProjetoLaravel\Providers\AuthServiceProvider::class,
         ProjetoLaravel\Providers\EventServiceProvider::class,
         ProjetoLaravel\Providers\RouteServiceProvider::class,
+        ProjetoLaravel\Providers\ProjetoLaravelRepositoryProvider::class,
 
     ],
 
