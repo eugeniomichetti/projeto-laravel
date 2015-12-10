@@ -85,7 +85,7 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $client = $this->service->find($id);
+        $client = $this->repository->find($id);
         $client->name = $request->input('name');
         $client->responsible = $request->input('responsible');
         $client->email = $request->input('email');
@@ -105,6 +105,6 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        $this->service->find($id)->delete();
+        $this->repository->find($id)->delete();
     }
 }

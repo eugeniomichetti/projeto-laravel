@@ -58,17 +58,4 @@ class ClientService
             ];
         }
     }
-    public function find(array $data)
-    {
-        try {
-            $this->validator->with($data)->passesOrFail();
-            return $this->repository->find($data);
-
-        } catch (ValidatorException $e) {
-            return [
-                'error' => true,
-                'message' => $e->getMessageBag()
-            ];
-        }
-    }
 }
