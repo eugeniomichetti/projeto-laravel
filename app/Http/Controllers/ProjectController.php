@@ -3,21 +3,21 @@
 namespace ProjetoLaravel\Http\Controllers;
 
 use Illuminate\Http\Request;
-use ProjetoLaravel\Repositories\ClientRepository;
-use ProjetoLaravel\Services\ClientService;
+use ProjetoLaravel\Repositories\ProjectRepository;
+use ProjetoLaravel\Services\ProjectService;
 
-class ClientController extends Controller
+class ProjectController extends Controller
 {
     /**
-     * @var ClientRepository
+     * @var ProjectRepository
      */
     private $repository;
     /**
-     * @var ClientService
+     * @var ProjectService
      */
     private $service;
 
-    public function __construct(ClientRepository $repository, ClientService $service)
+    public function __construct(ProjectRepository $repository, ProjectService $service)
     {
         $this->repository = $repository;
         $this->service = $service;
@@ -30,8 +30,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        return $this->service->all();
-
+        //return $this->service->all();
     }
 
     /**
@@ -52,7 +51,7 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->service->create($request->all());
+        //return $this->service->create($request->all());
     }
 
     /**
@@ -63,7 +62,7 @@ class ClientController extends Controller
      */
     public function show($id)
     {
-        return $this->repository->find($id);
+        //return $this->repository->find($id);
     }
 
     /**
@@ -86,16 +85,16 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $client = $this->repository->find($id);
-        $client->name = $request->input('name');
-        $client->responsible = $request->input('responsible');
-        $client->email = $request->input('email');
-        $client->phone = $request->input('phone');
-        $client->address = $request->input('address');
-        $client->obs = $request->input('obs');
-        $client->save();
+        /*$project = $this->repository->find($id);
+        $project->name = $request->input('name');
+        $project->responsible = $request->input('responsible');
+        $project->email = $request->input('email');
+        $project->phone = $request->input('phone');
+        $project->address = $request->input('address');
+        $project->obs = $request->input('obs');
+        $project->save();
 
-        return $client;
+        return $project;*/
     }
 
     /**
