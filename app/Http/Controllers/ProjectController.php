@@ -30,7 +30,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        //return $this->service->all();
+        return $this->repository->all();
     }
 
     /**
@@ -51,7 +51,7 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //return $this->service->create($request->all());
+        return $this->service->create($request->all());
     }
 
     /**
@@ -62,7 +62,7 @@ class ProjectController extends Controller
      */
     public function show($id)
     {
-        //return $this->repository->find($id);
+        return $this->repository->find($id);
     }
 
     /**
@@ -85,7 +85,7 @@ class ProjectController extends Controller
      */
     public function update(Request $request, $id)
     {
-        /*$project = $this->repository->find($id);
+        $project = $this->repository->find($id);
         $project->name = $request->input('name');
         $project->responsible = $request->input('responsible');
         $project->email = $request->input('email');
@@ -93,8 +93,7 @@ class ProjectController extends Controller
         $project->address = $request->input('address');
         $project->obs = $request->input('obs');
         $project->save();
-
-        return $project;*/
+        return $project;
     }
 
     /**

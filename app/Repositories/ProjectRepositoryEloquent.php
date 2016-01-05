@@ -10,7 +10,7 @@ namespace ProjetoLaravel\Repositories;
 
 
 use Prettus\Repository\Eloquent\BaseRepository;
-use ProjetoLaravel\Entities\Client;
+use ProjetoLaravel\Entities\Project;
 
 
 class ProjectRepositoryEloquent extends BaseRepository implements ProjectRepository
