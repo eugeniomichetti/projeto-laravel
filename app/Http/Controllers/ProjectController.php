@@ -62,7 +62,8 @@ class ProjectController extends Controller
      */
     public function show($id)
     {
-        return $this->repository->find($id);
+        $project = $this->repository->find($id);
+        return $this->repository->find($id)->with('owner_id' | $project->owner_id)->with('client_id' | $project->client_id);
     }
 
     /**
@@ -86,12 +87,13 @@ class ProjectController extends Controller
     public function update(Request $request, $id)
     {
         $project = $this->repository->find($id);
+        $project->owner_id = $request->input('owner_id');
+        $project->client_id = $request->input('client_id');
         $project->name = $request->input('name');
-        $project->responsible = $request->input('responsible');
-        $project->email = $request->input('email');
-        $project->phone = $request->input('phone');
-        $project->address = $request->input('address');
-        $project->obs = $request->input('obs');
+        $project->description = $request->input('description');
+        $project->progress = $request->input('progress');
+        $project->status = $request->input('status');
+        $project->due_date = $request->input('due_date');
         $project->save();
         return $project;
     }
