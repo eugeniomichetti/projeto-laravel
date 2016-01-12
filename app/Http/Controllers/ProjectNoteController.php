@@ -3,21 +3,21 @@
 namespace ProjetoLaravel\Http\Controllers;
 
 use Illuminate\Http\Request;
-use ProjetoLaravel\Repositories\ProjectRepository;
-use ProjetoLaravel\Services\ProjectService;
+use ProjetoLaravel\Repositories\ProjectNoteRepository;
+use ProjetoLaravel\Services\ProjectNoteService;
 
-class ProjectController extends Controller
+class ProjectNoteController extends Controller
 {
     /**
-     * @var ProjectRepository
+     * @var ProjectNoteRepository
      */
     private $repository;
     /**
-     * @var ProjectService
+     * @var ProjectNoteService
      */
     private $service;
 
-    public function __construct(ProjectRepository $repository, ProjectService $service)
+    public function __construct(ProjectNoteRepository $repository, ProjectNoteService $service)
     {
         $this->repository = $repository;
         $this->service = $service;
@@ -28,9 +28,9 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        return $this->repository->all();
+        return $this->repository->findWhere(['project_id'=>$id]);
     }
 
     /**
@@ -60,9 +60,9 @@ class ProjectController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, $noteId)
     {
-        return $this->repository->with('owner')->with('client')->find($id);
+        return $this->repository->findWhere(['project_id'=> $id, 'id' => $noteId]);
     }
 
     /**
@@ -83,18 +83,14 @@ class ProjectController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, $noteId)
     {
-        $project = $this->repository->find($id);
-        $project->owner_id = $request->input('owner_id');
-        $project->client_id = $request->input('client_id');
-        $project->name = $request->input('name');
-        $project->description = $request->input('description');
-        $project->progress = $request->input('progress');
-        $project->status = $request->input('status');
-        $project->due_date = $request->input('due_date');
-        $project->save();
-        return $project;
+        $projectNote = $this->repository->find($noteId);
+        $projectNote->owner_id = $request->input('owner_id');
+        $projectNote->title = $request->input('title');
+        $projectNote->note = $request->input('note');
+        $projectNote->save();
+        return $projectNote;
     }
 
     /**

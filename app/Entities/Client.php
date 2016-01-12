@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Client extends Model
 {
-    protected $fillable= [
+    protected $fillable = [
         'name',
         'responsible',
         'email',
@@ -14,4 +14,14 @@ class Client extends Model
         'address',
         'obs'
     ];
+
+    public function notes()
+    {
+        return $this->hasMany(User::class);
+    }
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
 }
