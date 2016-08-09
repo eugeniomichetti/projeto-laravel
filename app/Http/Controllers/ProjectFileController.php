@@ -3,10 +3,12 @@
 namespace ProjetoLaravel\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use ProjetoLaravel\Repositories\ProjectRepository;
 use ProjetoLaravel\Services\ProjectService;
 
-class ProjectController extends Controller
+class ProjectFileController extends Controller
 {
     /**
      * @var ProjectRepository
@@ -51,7 +53,18 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->service->create($request->all());
+        $file = $request->file('file');
+        $extesion = $file->getClientOriginalExtension();
+
+        $data['file'] = $file;
+        $data['extension'] = $extesion;
+        $data['name'] = $request->name;
+        $data['description'] = $request->description;
+        $data['project_id'] = $request->project_id;
+
+        $this->service->createFile($data);
+
+        //return $this->service->create($request->all());
     }
 
     /**
@@ -129,9 +142,10 @@ class ProjectController extends Controller
         return $this->repository->hasMember($projectId, $userId);
     }
 
-    private function checkProjectPermission($projectId){
+    private function checkProjectPermission($projectId)
+    {
 
-        if($this->checkProjectOwner($projectId) || $this->checkProjectMember($projectId)){
+        if ($this->checkProjectOwner($projectId) || $this->checkProjectMember($projectId)) {
             return true;
         }
 

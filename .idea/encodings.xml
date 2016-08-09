@@ -4,5 +4,6 @@
     <file url="file://$PROJECT_DIR$/app/Http/Controllers/ClientController.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Http/Controllers/ProjectController.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Http/Controllers/ProjectNoteController.php" charset="UTF-8" />
+    <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>
