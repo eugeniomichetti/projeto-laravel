@@ -30,7 +30,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return $this->repository->findWhere(['owner_id' => \Authorizer::getResourceOwnerId()]);
+        return $this->repository->all();
     }
 
     /**
@@ -62,10 +62,7 @@ class ProjectController extends Controller
      */
     public function show($id)
     {
-        if ($this->checkProjectPermission($id) == false) {
-            return ['error' => 'Acesso negado ao projeto!'];
-        }
-        return $this->repository->with('owner')->with('client')->with('members')->find($id);
+        return $this->repository->with('owner')->with('client')->find($id);
     }
 
     /**
@@ -88,9 +85,6 @@ class ProjectController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if ($this->checkProjectPermission($id) == false) {
-            return ['error' => 'Acesso negado ao projeto!'];
-        }
         $project = $this->repository->find($id);
         $project->owner_id = $request->input('owner_id');
         $project->client_id = $request->input('client_id');
@@ -111,30 +105,6 @@ class ProjectController extends Controller
      */
     public function destroy($id)
     {
-        if ($this->checkProjectPermission($id) == false) {
-            return ['error' => 'Acesso negado ao projeto!'];
-        }
         $this->repository->find($id)->delete();
-    }
-
-    private function checkProjectOwner($projectId)
-    {
-        $userId = \Authorizer::getResourceOwnerId();
-        return $this->repository->isOwner($projectId, $userId);
-    }
-
-    private function checkProjectMember($projectId)
-    {
-        $userId = \Authorizer::getResourceOwnerId();
-        return $this->repository->hasMember($projectId, $userId);
-    }
-
-    private function checkProjectPermission($projectId){
-
-        if($this->checkProjectOwner($projectId) || $this->checkProjectMember($projectId)){
-            return true;
-        }
-
-        return false;
     }
 }
