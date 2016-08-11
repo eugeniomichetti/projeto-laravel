@@ -5,13 +5,20 @@ angular.module('app.controllers')
             password: ''
         };
 
+        $scope.error = {
+            status: false,
+            message: ''
+        };
+
         $scope.login = function () {
-            console.log($scope.user);
-            OAuth.getAccessToken($scope.user)
-                .then(function () {
-                    $location.path('home');
-                }, function () {
-                    alert('Login invalido');
-                });
+            if ($scope.form.$valid) {
+                OAuth.getAccessToken($scope.user)
+                    .then(function () {
+                        $location.path('home');
+                    }, function (i) {
+                        $scope.error.status = true;
+                        $scope.error.message = i.data.error_description;
+                    });
+            }
         };
     });
