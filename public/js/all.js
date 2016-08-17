@@ -453,4 +453,234 @@ angular.$$uibDatepickerpopupCss=!0}),angular.module("ui.bootstrap.tooltip").run(
 'use strict';angular.module('mgcrea.ngStrap.navbar',[]).provider('$navbar',function(){var t=this.defaults={activeClass:'active',routeAttr:'data-match-route',strict:!1};this.$get=function(){return{defaults:t}}}).directive('bsNavbar',['$window','$location','$navbar',function(t,a,r){var e=r.defaults;return{restrict:'A',link:function(t,r,n,i){var c=angular.copy(e);angular.forEach(Object.keys(e),function(t){angular.isDefined(n[t])&&(c[t]=n[t])}),t.$watch(function(){return a.path()},function(t,a){var e=r[0].querySelectorAll('li['+c.routeAttr+']');angular.forEach(e,function(a){var r=angular.element(a),e=r.attr(c.routeAttr).replace('/','\\/');c.strict&&(e='^'+e+'$');var n=new RegExp(e,'i');n.test(t)?r.addClass(c.activeClass):r.removeClass(c.activeClass)})})}}}]);
 //# sourceMappingURL=navbar.min.js.map
 
+/*
+ AngularJS v1.5.8
+ (c) 2010-2016 Google, Inc. http://angularjs.org
+ License: MIT
+*/
+(function(n,c){'use strict';function l(b,a,g){var d=g.baseHref(),k=b[0];return function(b,e,f){var g,h;f=f||{};h=f.expires;g=c.isDefined(f.path)?f.path:d;c.isUndefined(e)&&(h="Thu, 01 Jan 1970 00:00:00 GMT",e="");c.isString(h)&&(h=new Date(h));e=encodeURIComponent(b)+"="+encodeURIComponent(e);e=e+(g?";path="+g:"")+(f.domain?";domain="+f.domain:"");e+=h?";expires="+h.toUTCString():"";e+=f.secure?";secure":"";f=e.length+1;4096<f&&a.warn("Cookie '"+b+"' possibly not set or overflowed because it was too large ("+
+f+" > 4096 bytes)!");k.cookie=e}}c.module("ngCookies",["ng"]).provider("$cookies",[function(){var b=this.defaults={};this.$get=["$$cookieReader","$$cookieWriter",function(a,g){return{get:function(d){return a()[d]},getObject:function(d){return(d=this.get(d))?c.fromJson(d):d},getAll:function(){return a()},put:function(d,a,m){g(d,a,m?c.extend({},b,m):b)},putObject:function(d,b,a){this.put(d,c.toJson(b),a)},remove:function(a,k){g(a,void 0,k?c.extend({},b,k):b)}}}]}]);c.module("ngCookies").factory("$cookieStore",
+["$cookies",function(b){return{get:function(a){return b.getObject(a)},put:function(a,c){b.putObject(a,c)},remove:function(a){b.remove(a)}}}]);l.$inject=["$document","$log","$browser"];c.module("ngCookies").provider("$$cookieWriter",function(){this.$get=l})})(window,window.angular);
+//# sourceMappingURL=angular-cookies.min.js.map
+
+!function(e,t){"function"==typeof define&&define.amd?define(["angular","angular-cookies","query-string"],t):"object"==typeof exports?module.exports=t(require("angular"),require("angular-cookies"),require("query-string")):e.angularOAuth2=t(e.angular,"ngCookies",e.queryString)}(this,function(e,t,n){function r(e){e.interceptors.push("oauthInterceptor")}function o(e,t,n){return{request:function(e){return e.headers=e.headers||{},!e.headers.hasOwnProperty("Authorization")&&n.getAuthorizationHeader()&&(e.headers.Authorization=n.getAuthorizationHeader()),e},responseError:function(r){return 400!==r.status||!r.data||"invalid_request"!==r.data.error&&"invalid_grant"!==r.data.error||(n.removeToken(),t.$emit("oauth:error",r)),(401===r.status&&r.data&&"invalid_token"===r.data.error||r.headers("www-authenticate")&&0===r.headers("www-authenticate").indexOf("Bearer"))&&t.$emit("oauth:error",r),e.reject(r)}}}function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function a(){var t;this.configure=function(n){if(t)throw new Error("Already configured.");if(!(n instanceof Object))throw new TypeError("Invalid argument: `config` must be an `Object`.");return t=e.extend({},h,n),e.forEach(f,function(e){if(!t[e])throw new Error("Missing parameter: "+e+".")}),"/"===t.baseUrl.substr(-1)&&(t.baseUrl=t.baseUrl.slice(0,-1)),"/"!==t.grantPath[0]&&(t.grantPath="/"+t.grantPath),"/"!==t.revokePath[0]&&(t.revokePath="/"+t.revokePath),t},this.$get=function(r,o){var a=function(){function a(){if(i(this,a),!t)throw new Error("`OAuthProvider` must be configured first.")}return s(a,[{key:"isAuthenticated",value:function(){return!!o.getToken()}},{key:"getAccessToken",value:function(i,a){return i=e.extend({client_id:t.clientId,grant_type:"password"},i),null!==t.clientSecret&&(i.client_secret=t.clientSecret),i=n.stringify(i),a=e.extend({headers:{Authorization:void 0,"Content-Type":"application/x-www-form-urlencoded"}},a),r.post(""+t.baseUrl+t.grantPath,i,a).then(function(e){return o.setToken(e.data),e})}},{key:"getRefreshToken",value:function(i,a){return i=e.extend({client_id:t.clientId,grant_type:"refresh_token",refresh_token:o.getRefreshToken()},i),null!==t.clientSecret&&(i.client_secret=t.clientSecret),i=n.stringify(i),a=e.extend({headers:{Authorization:void 0,"Content-Type":"application/x-www-form-urlencoded"}},a),r.post(""+t.baseUrl+t.grantPath,i,a).then(function(e){return o.setToken(e.data),e})}},{key:"revokeToken",value:function(i,a){var u=o.getRefreshToken();return i=e.extend({client_id:t.clientId,token:u?u:o.getAccessToken(),token_type_hint:u?"refresh_token":"access_token"},i),null!==t.clientSecret&&(i.client_secret=t.clientSecret),i=n.stringify(i),a=e.extend({headers:{"Content-Type":"application/x-www-form-urlencoded"}},a),r.post(""+t.baseUrl+t.revokePath,i,a).then(function(e){return o.removeToken(),e})}}]),a}();return new a},this.$get.$inject=["$http","OAuthToken"]}function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function u(){var t={name:"token",options:{secure:!0}};this.configure=function(n){if(!(n instanceof Object))throw new TypeError("Invalid argument: `config` must be an `Object`.");return e.extend(t,n),t},this.$get=function(e){var n=function(){function n(){i(this,n)}return s(n,[{key:"setToken",value:function(n){return e.putObject(t.name,n,t.options)}},{key:"getToken",value:function(){return e.getObject(t.name)}},{key:"getAccessToken",value:function(){return this.getToken()?this.getToken().access_token:void 0}},{key:"getAuthorizationHeader",value:function(){return this.getTokenType()&&this.getAccessToken()?this.getTokenType().charAt(0).toUpperCase()+this.getTokenType().substr(1)+" "+this.getAccessToken():void 0}},{key:"getRefreshToken",value:function(){return this.getToken()?this.getToken().refresh_token:void 0}},{key:"getTokenType",value:function(){return this.getToken()?this.getToken().token_type:void 0}},{key:"removeToken",value:function(){return e.remove(t.name,t.options)}}]),n}();return new n},this.$get.$inject=["$cookies"]}var c=e.module("angular-oauth2",[t]).config(r).factory("oauthInterceptor",o).provider("OAuth",a).provider("OAuthToken",u);r.$inject=["$httpProvider"],o.$inject=["$q","$rootScope","OAuthToken"];var s=function(){function e(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(t,n,r){return n&&e(t.prototype,n),r&&e(t,r),t}}(),h={baseUrl:null,clientId:null,clientSecret:null,grantPath:"/oauth2/token",revokePath:"/oauth2/revoke"},f=["baseUrl","clientId","grantPath","revokePath"],s=function(){function e(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(t,n,r){return n&&e(t.prototype,n),r&&e(t,r),t}}();return c});
+/*!
+	query-string
+	Parse and stringify URL query strings
+	https://github.com/sindresorhus/query-string
+	by Sindre Sorhus
+	MIT License
+*/
+(function () {
+	'use strict';
+	var queryString = {};
+
+	queryString.parse = function (str) {
+		if (typeof str !== 'string') {
+			return {};
+		}
+
+		str = str.trim().replace(/^(\?|#)/, '');
+
+		if (!str) {
+			return {};
+		}
+
+		return str.trim().split('&').reduce(function (ret, param) {
+			var parts = param.replace(/\+/g, ' ').split('=');
+			var key = parts[0];
+			var val = parts[1];
+
+			key = decodeURIComponent(key);
+			// missing `=` should be `null`:
+			// http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
+			val = val === undefined ? null : decodeURIComponent(val);
+
+			if (!ret.hasOwnProperty(key)) {
+				ret[key] = val;
+			} else if (Array.isArray(ret[key])) {
+				ret[key].push(val);
+			} else {
+				ret[key] = [ret[key], val];
+			}
+
+			return ret;
+		}, {});
+	};
+
+	queryString.stringify = function (obj) {
+		return obj ? Object.keys(obj).map(function (key) {
+			var val = obj[key];
+
+			if (Array.isArray(val)) {
+				return val.map(function (val2) {
+					return encodeURIComponent(key) + '=' + encodeURIComponent(val2);
+				}).join('&');
+			}
+
+			return encodeURIComponent(key) + '=' + encodeURIComponent(val);
+		}).join('&') : '';
+	};
+
+	if (typeof define === 'function' && define.amd) {
+		define(function() { return queryString; });
+	} else if (typeof module !== 'undefined' && module.exports) {
+		module.exports = queryString;
+	} else {
+		self.queryString = queryString;
+	}
+})();
+
+/*! ng-dialog - v0.6.2 (https://github.com/likeastore/ngDialog) */
+!function(a,b){"undefined"!=typeof module&&module.exports?(b("undefined"==typeof angular?require("angular"):angular),module.exports="ngDialog"):"function"==typeof define&&define.amd?define(["angular"],b):b(a.angular)}(this,function(a){"use strict";var b=a.module("ngDialog",[]),c=a.element,d=a.isDefined,e=(document.body||document.documentElement).style,f=d(e.animation)||d(e.WebkitAnimation)||d(e.MozAnimation)||d(e.MsAnimation)||d(e.OAnimation),g="animationend webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend",h="a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, *[tabindex], *[contenteditable]",i="ngdialog-disabled-animation",j={html:!1,body:!1},k={},l=[],m=!1,n=!1;return b.provider("ngDialog",function(){var b=this.defaults={className:"ngdialog-theme-default",appendClassName:"",disableAnimation:!1,plain:!1,showClose:!0,closeByDocument:!0,closeByEscape:!0,closeByNavigation:!1,appendTo:!1,preCloseCallback:!1,overlay:!0,cache:!0,trapFocus:!0,preserveFocus:!0,ariaAuto:!0,ariaRole:null,ariaLabelledById:null,ariaLabelledBySelector:null,ariaDescribedById:null,ariaDescribedBySelector:null,bodyClassName:"ngdialog-open",width:null};this.setForceHtmlReload=function(a){j.html=a||!1},this.setForceBodyReload=function(a){j.body=a||!1},this.setDefaults=function(c){a.extend(b,c)},this.setOpenOnePerName=function(a){n=a||!1};var d,e=0,o=0,p={};this.$get=["$document","$templateCache","$compile","$q","$http","$rootScope","$timeout","$window","$controller","$injector",function(q,r,s,t,u,v,w,x,y,z){var A=[],B={onDocumentKeydown:function(a){27===a.keyCode&&C.close("$escape")},activate:function(a){var b=a.data("$ngDialogOptions");b.trapFocus&&(a.on("keydown",B.onTrapFocusKeydown),A.body.on("keydown",B.onTrapFocusKeydown))},deactivate:function(a){a.off("keydown",B.onTrapFocusKeydown),A.body.off("keydown",B.onTrapFocusKeydown)},deactivateAll:function(b){a.forEach(b,function(b){var c=a.element(b);B.deactivate(c)})},setBodyPadding:function(a){var b=parseInt(A.body.css("padding-right")||0,10);A.body.css("padding-right",b+a+"px"),A.body.data("ng-dialog-original-padding",b),v.$broadcast("ngDialog.setPadding",a)},resetBodyPadding:function(){var a=A.body.data("ng-dialog-original-padding");a?A.body.css("padding-right",a+"px"):A.body.css("padding-right",""),v.$broadcast("ngDialog.setPadding",0)},performCloseDialog:function(a,b){var c=a.data("$ngDialogOptions"),e=a.attr("id"),h=k[e];if(h){if("undefined"!=typeof x.Hammer){var i=h.hammerTime;i.off("tap",d),i.destroy&&i.destroy(),delete h.hammerTime}else a.unbind("click");1===o&&A.body.unbind("keydown",B.onDocumentKeydown),a.hasClass("ngdialog-closing")||(o-=1);var j=a.data("$ngDialogPreviousFocus");j&&j.focus&&j.focus(),v.$broadcast("ngDialog.closing",a,b),o=0>o?0:o,f&&!c.disableAnimation?(h.$destroy(),a.unbind(g).bind(g,function(){B.closeDialogElement(a,b)}).addClass("ngdialog-closing")):(h.$destroy(),B.closeDialogElement(a,b)),p[e]&&(p[e].resolve({id:e,value:b,$dialog:a,remainingDialogs:o}),delete p[e]),k[e]&&delete k[e],l.splice(l.indexOf(e),1),l.length||(A.body.unbind("keydown",B.onDocumentKeydown),m=!1)}},closeDialogElement:function(a,b){var c=a.data("$ngDialogOptions");a.remove(),0===o&&(A.html.removeClass(c.bodyClassName),A.body.removeClass(c.bodyClassName),B.resetBodyPadding()),v.$broadcast("ngDialog.closed",a,b)},closeDialog:function(b,c){var d=b.data("$ngDialogPreCloseCallback");if(d&&a.isFunction(d)){var e=d.call(b,c);a.isObject(e)?e.closePromise?e.closePromise.then(function(){B.performCloseDialog(b,c)}):e.then(function(){B.performCloseDialog(b,c)},function(){}):e!==!1&&B.performCloseDialog(b,c)}else B.performCloseDialog(b,c)},onTrapFocusKeydown:function(b){var c,d=a.element(b.currentTarget);if(d.hasClass("ngdialog"))c=d;else if(c=B.getActiveDialog(),null===c)return;var e=9===b.keyCode,f=b.shiftKey===!0;e&&B.handleTab(c,b,f)},handleTab:function(a,b,c){var d=B.getFocusableElements(a);if(0===d.length)return void(document.activeElement&&document.activeElement.blur&&document.activeElement.blur());var e=document.activeElement,f=Array.prototype.indexOf.call(d,e),g=-1===f,h=0===f,i=f===d.length-1,j=!1;c?(g||h)&&(d[d.length-1].focus(),j=!0):(g||i)&&(d[0].focus(),j=!0),j&&(b.preventDefault(),b.stopPropagation())},autoFocus:function(a){var b=a[0],d=b.querySelector("*[autofocus]");if(null===d||(d.focus(),document.activeElement!==d)){var e=B.getFocusableElements(a);if(e.length>0)return void e[0].focus();var f=B.filterVisibleElements(b.querySelectorAll("h1,h2,h3,h4,h5,h6,p,span"));if(f.length>0){var g=f[0];c(g).attr("tabindex","-1").css("outline","0"),g.focus()}}},getFocusableElements:function(a){var b=a[0],c=b.querySelectorAll(h),d=B.filterTabbableElements(c);return B.filterVisibleElements(d)},filterTabbableElements:function(a){for(var b=[],d=0;d<a.length;d++){var e=a[d];"-1"!==c(e).attr("tabindex")&&b.push(e)}return b},filterVisibleElements:function(a){for(var b=[],c=0;c<a.length;c++){var d=a[c];(d.offsetWidth>0||d.offsetHeight>0)&&b.push(d)}return b},getActiveDialog:function(){var a=document.querySelectorAll(".ngdialog");return 0===a.length?null:c(a[a.length-1])},applyAriaAttributes:function(a,b){if(b.ariaAuto){if(!b.ariaRole){var c=B.getFocusableElements(a).length>0?"dialog":"alertdialog";b.ariaRole=c}b.ariaLabelledBySelector||(b.ariaLabelledBySelector="h1,h2,h3,h4,h5,h6"),b.ariaDescribedBySelector||(b.ariaDescribedBySelector="article,section,p")}b.ariaRole&&a.attr("role",b.ariaRole),B.applyAriaAttribute(a,"aria-labelledby",b.ariaLabelledById,b.ariaLabelledBySelector),B.applyAriaAttribute(a,"aria-describedby",b.ariaDescribedById,b.ariaDescribedBySelector)},applyAriaAttribute:function(a,b,d,e){if(d&&a.attr(b,d),e){var f=a.attr("id"),g=a[0].querySelector(e);if(!g)return;var h=f+"-"+b;return c(g).attr("id",h),a.attr(b,h),h}},detectUIRouter:function(){try{return a.module("ui.router"),!0}catch(b){return!1}},getRouterLocationEventName:function(){return B.detectUIRouter()?"$stateChangeSuccess":"$locationChangeSuccess"}},C={__PRIVATE__:B,open:function(f){function g(a,b){return v.$broadcast("ngDialog.templateLoading",a),u.get(a,b||{}).then(function(b){return v.$broadcast("ngDialog.templateLoaded",a),b.data||""})}function h(b){return b?a.isString(b)&&q.plain?b:"boolean"!=typeof q.cache||q.cache?g(b,{cache:r}):g(b,{cache:!1}):"Empty template"}var j=null;if(f=f||{},!(n&&f.name&&(j=f.name+" dialog",this.isOpen(j)))){var q=a.copy(b),D=++e;j=j||"ngdialog"+D,l.push(j),"undefined"!=typeof q.data&&("undefined"==typeof f.data&&(f.data={}),f.data=a.merge(a.copy(q.data),f.data)),a.extend(q,f);var E;p[j]=E=t.defer();var F;k[j]=F=a.isObject(q.scope)?q.scope.$new():v.$new();var G,H,I=a.extend({},q.resolve);return a.forEach(I,function(b,c){I[c]=a.isString(b)?z.get(b):z.invoke(b,null,null,c)}),t.all({template:h(q.template||q.templateUrl),locals:t.all(I)}).then(function(b){var e=b.template,f=b.locals;q.showClose&&(e+='<div class="ngdialog-close"></div>');var g=q.overlay?"":" ngdialog-no-overlay";if(G=c('<div id="'+j+'" class="ngdialog'+g+'"></div>'),G.html(q.overlay?'<div class="ngdialog-overlay"></div><div class="ngdialog-content" role="document">'+e+"</div>":'<div class="ngdialog-content" role="document">'+e+"</div>"),G.data("$ngDialogOptions",q),F.ngDialogId=j,q.data&&a.isString(q.data)){var h=q.data.replace(/^\s*/,"")[0];F.ngDialogData="{"===h||"["===h?a.fromJson(q.data):new String(q.data),F.ngDialogData.ngDialogId=j}else q.data&&a.isObject(q.data)&&(F.ngDialogData=q.data,F.ngDialogData.ngDialogId=j);if(q.className&&G.addClass(q.className),q.appendClassName&&G.addClass(q.appendClassName),q.width){var k=G[0].querySelector(".ngdialog-content");a.isString(q.width)?k.style.width=q.width:k.style.width=q.width+"px"}if(q.disableAnimation&&G.addClass(i),H=q.appendTo&&a.isString(q.appendTo)?a.element(document.querySelector(q.appendTo)):A.body,B.applyAriaAttributes(G,q),q.preCloseCallback){var l;a.isFunction(q.preCloseCallback)?l=q.preCloseCallback:a.isString(q.preCloseCallback)&&F&&(a.isFunction(F[q.preCloseCallback])?l=F[q.preCloseCallback]:F.$parent&&a.isFunction(F.$parent[q.preCloseCallback])?l=F.$parent[q.preCloseCallback]:v&&a.isFunction(v[q.preCloseCallback])&&(l=v[q.preCloseCallback])),l&&G.data("$ngDialogPreCloseCallback",l)}if(F.closeThisDialog=function(a){B.closeDialog(G,a)},q.controller&&(a.isString(q.controller)||a.isArray(q.controller)||a.isFunction(q.controller))){var n;q.controllerAs&&a.isString(q.controllerAs)&&(n=q.controllerAs);var p=y(q.controller,a.extend(f,{$scope:F,$element:G}),!0,n);q.bindToController&&a.extend(p.instance,{ngDialogId:F.ngDialogId,ngDialogData:F.ngDialogData,closeThisDialog:F.closeThisDialog}),"function"==typeof p?G.data("$ngDialogControllerController",p()):G.data("$ngDialogControllerController",p)}if(w(function(){var a=document.querySelectorAll(".ngdialog");B.deactivateAll(a),s(G)(F);var b=x.innerWidth-A.body.prop("clientWidth");A.html.addClass(q.bodyClassName),A.body.addClass(q.bodyClassName);var c=b-(x.innerWidth-A.body.prop("clientWidth"));c>0&&B.setBodyPadding(c),H.append(G),B.activate(G),q.trapFocus&&B.autoFocus(G),q.name?v.$broadcast("ngDialog.opened",{dialog:G,name:q.name}):v.$broadcast("ngDialog.opened",G)}),m||(A.body.bind("keydown",B.onDocumentKeydown),m=!0),q.closeByNavigation){var r=B.getRouterLocationEventName();v.$on(r,function(){B.closeDialog(G)})}if(q.preserveFocus&&G.data("$ngDialogPreviousFocus",document.activeElement),d=function(a){var b=q.closeByDocument?c(a.target).hasClass("ngdialog-overlay"):!1,d=c(a.target).hasClass("ngdialog-close");(b||d)&&C.close(G.attr("id"),d?"$closeButton":"$document")},"undefined"!=typeof x.Hammer){var t=F.hammerTime=x.Hammer(G[0]);t.on("tap",d)}else G.bind("click",d);return o+=1,C}),{id:j,closePromise:E.promise,close:function(a){B.closeDialog(G,a)}}}},openConfirm:function(d){var e=t.defer(),f=a.copy(b);d=d||{},"undefined"!=typeof f.data&&("undefined"==typeof d.data&&(d.data={}),d.data=a.merge(a.copy(f.data),d.data)),a.extend(f,d),f.scope=a.isObject(f.scope)?f.scope.$new():v.$new(),f.scope.confirm=function(a){e.resolve(a);var b=c(document.getElementById(g.id));B.performCloseDialog(b,a)};var g=C.open(f);return g?(g.closePromise.then(function(a){return a?e.reject(a.value):e.reject()}),e.promise):void 0},isOpen:function(a){var b=c(document.getElementById(a));return b.length>0},close:function(a,b){var d=c(document.getElementById(a));if(d.length)B.closeDialog(d,b);else if("$escape"===a){var e=l[l.length-1];d=c(document.getElementById(e)),d.data("$ngDialogOptions").closeByEscape&&B.closeDialog(d,"$escape")}else C.closeAll(b);return C},closeAll:function(a){for(var b=document.querySelectorAll(".ngdialog"),d=b.length-1;d>=0;d--){var e=b[d];B.closeDialog(c(e),a)}},getOpenDialogs:function(){return l},getDefaults:function(){return b}};return a.forEach(["html","body"],function(a){if(A[a]=q.find(a),j[a]){var b=B.getRouterLocationEventName();v.$on(b,function(){A[a]=q.find(a)})}}),C}]}),b.directive("ngDialog",["ngDialog",function(b){return{restrict:"A",scope:{ngDialogScope:"="},link:function(c,d,e){d.on("click",function(d){d.preventDefault();var f=a.isDefined(c.ngDialogScope)?c.ngDialogScope:"noScope";a.isDefined(e.ngDialogClosePrevious)&&b.close(e.ngDialogClosePrevious);var g=b.getDefaults();b.open({template:e.ngDialog,className:e.ngDialogClass||g.className,appendClassName:e.ngDialogAppendClass,controller:e.ngDialogController,controllerAs:e.ngDialogControllerAs,bindToController:e.ngDialogBindToController,scope:f,data:e.ngDialogData,showClose:"false"===e.ngDialogShowClose?!1:"true"===e.ngDialogShowClose?!0:g.showClose,closeByDocument:"false"===e.ngDialogCloseByDocument?!1:"true"===e.ngDialogCloseByDocument?!0:g.closeByDocument,closeByEscape:"false"===e.ngDialogCloseByEscape?!1:"true"===e.ngDialogCloseByEscape?!0:g.closeByEscape,overlay:"false"===e.ngDialogOverlay?!1:"true"===e.ngDialogOverlay?!0:g.overlay,preCloseCallback:e.ngDialogPreCloseCallback||g.preCloseCallback,bodyClassName:e.ngDialogBodyClass||g.bodyClassName})})}}}]),b});
+var app = angular.module('app', ['ngRoute', 'angular-oauth2', 'app.controllers', 'app.services']);
+
+angular.module('app.controllers', ['ngMessages', 'angular-oauth2']);
+angular.module('app.services', ['ngResource']);
+
+app.provider('appConfig', function () {
+    var config = {
+        baseUrl: 'http://localhost:8000'
+    };
+    return {
+        config: config,
+        $get: function () {
+            return config;
+        }
+    }
+});
+
+app.config(['$routeProvider', 'OAuthProvider','OAuthTokenProvider', 'appConfigProvider', function ($routeProvider, OAuthProvider,OAuthTokenProvider, appConfigProvider) {
+    $routeProvider
+        .when('/login', {
+            templateUrl: 'build/views/login.html',
+            controller: 'loginController'
+        })
+        .when('/home', {
+            templateUrl: 'build/views/home.html',
+            controller: 'homeController'
+        })
+        .when('/clients', {
+            templateUrl: 'build/views/client/list.html',
+            controller: 'clientListController'
+        })
+        .when('/clients/new', {
+            templateUrl: 'build/views/client/new.html',
+            controller: 'clientNewController'
+        })
+        .when('/clients/:id/edit', {
+            templateUrl: 'build/views/client/edit.html',
+            controller: 'clientEditController'
+        })
+        .when('/clients/:id/remove', {
+            templateUrl: 'build/views/client/remove.html',
+            controller: 'clientRemoveController'
+        });
+
+    OAuthProvider.configure({
+        baseUrl: appConfigProvider.config.baseUrl,
+        clientId: 'appid1',
+        clientSecret: 'secretapp', // optional
+        grantPath: 'oauth/access_token'
+    });
+
+    OAuthTokenProvider.configure({
+        name: 'token',
+        options:{
+            secure: false
+        }
+    });
+}]);
+
+app.run(['$rootScope', '$window', 'OAuth', function ($rootScope, $window, OAuth) {
+    $rootScope.$on('oauth:error', function (event, rejection) {
+        // Ignore `invalid_grant` error - should be catched on `LoginController`.
+        if ('invalid_grant' === rejection.data.error) {
+            return;
+        }
+
+        // Refresh token when a `invalid_token` error occurs.
+        if ('invalid_token' === rejection.data.error) {
+            return OAuth.getRefreshToken();
+        }
+
+        // Redirect to `/login` with the `error_reason`.
+        return $window.location.href = '/login?error_reason=' + rejection.data.error;
+    });
+}]);
+angular.module('app.controllers')
+    .controller('homeController', function ($scope) {
+
+    });
+angular.module('app.controllers')
+    .controller('loginController', function ($scope, $location, OAuth) {
+        $scope.user = {
+            username: '',
+            password: ''
+        };
+
+        $scope.error = {
+            status: false,
+            message: ''
+        };
+
+        $scope.login = function () {
+            if ($scope.form.$valid) {
+                OAuth.getAccessToken($scope.user)
+                    .then(function () {
+                        $location.path('home');
+                    }, function (i) {
+                        $scope.error.status = true;
+                        $scope.error.message = i.data.error_description;
+                    });
+            }
+        };
+    });
+angular.module('app.services')
+    .service('Client', function ($resource, appConfig) {
+        return $resource(appConfig.baseUrl + '/client/:id', {id: '@id'},{
+            update:{
+                method: 'PUT'
+            }
+        });
+    });
+angular.module('app.controllers')
+    .controller('clientEditController', function ($scope, $routeParams, $location, Client) {
+        $scope.client = Client.get({id: $routeParams.id});
+
+        $scope.save = function () {
+            if ($scope.form.$valid) {
+                Client.update({id: $scope.client.id}, $scope.client, function () {
+                    $location.path('/clients');
+                });
+            }
+        };
+    });
+angular.module('app.controllers')
+    .controller('clientListController',  function ($scope, Client) {
+        $scope.clients = Client.query();
+    });
+angular.module('app.controllers')
+    .controller('clientNewController', function ($scope, $location, Client) {
+        $scope.client = new Client();
+
+        $scope.save = function () {
+            if ($scope.form.$valid) {
+                $scope.client.$save()
+                    .then(function () {
+                        $location.path('/clients');
+                    });
+            }
+        };
+    });
+angular.module('app.controllers')
+    .controller('clientRemoveController', function ($scope, $routeParams, $location, Client) {
+        $scope.client = Client.get({id: $routeParams.id});
+
+        $scope.remove = function () {
+            $scope.client.$delete().then(function () {
+                $location.path("/clients");
+            });
+        };
+    });
 //# sourceMappingURL=all.js.map
