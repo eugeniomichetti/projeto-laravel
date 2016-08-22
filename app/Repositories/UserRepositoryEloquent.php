@@ -11,9 +11,8 @@ namespace ProjetoLaravel\Repositories;
 
 use Prettus\Repository\Eloquent\BaseRepository;
 use ProjetoLaravel\Entities\User;
-use ProjetoLaravel\Presenters\ClientPresenter;
 
-class UserRepositoryEloquent extends BaseRepository implements ClientRepository
+class UserRepositoryEloquent extends BaseRepository implements UserRepository
 {
     public function model()
     {
