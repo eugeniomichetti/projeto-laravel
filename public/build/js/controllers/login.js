@@ -14,11 +14,10 @@ angular.module('app.controllers')
             if ($scope.form.$valid) {
                 OAuth.getAccessToken($scope.user)
                     .then(function () {
-                        User.authenticated().then(function (data) {
+                        User.authenticated({}, function (data) {
                             $cookies.putObject('user', data);
                             $location.path('home');
                         });
-
                     }, function (i) {
                         $scope.error.status = true;
                         $scope.error.message = i.data.error_description;
