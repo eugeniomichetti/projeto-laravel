@@ -88,13 +88,23 @@
     {{-- CONTROLLERS --}}
     <script src="{{asset('build/js/controllers/login.js')}}"></script>
     <script src="{{asset('build/js/controllers/home.js')}}"></script>
+
+    {{-- CLIENT CONTROLLERS--}}
     <script src="{{asset('build/js/controllers/client/clientList.js')}}"></script>
     <script src="{{asset('build/js/controllers/client/clientNew.js')}}"></script>
     <script src="{{asset('build/js/controllers/client/clientEdit.js')}}"></script>
     <script src="{{asset('build/js/controllers/client/clientRemove.js')}}"></script>
+    {{-- PROJECT-NOTE CONTROLLERS --}}
+    <script src="{{asset('build/js/controllers/project-notes/projectNoteShow.js')}}"></script>
+    <script src="{{asset('build/js/controllers/project-notes/projectNoteList.js')}}"></script>
+    <script src="{{asset('build/js/controllers/project-notes/projectNoteNew.js')}}"></script>
+    <script src="{{asset('build/js/controllers/project-notes/projectNoteEdit.js')}}"></script>
+    <script src="{{asset('build/js/controllers/project-notes/projectNoteRemove.js')}}"></script>
 
     {{-- SERVICES --}}
     <script src="{{asset('build/js/services/client.js')}}"></script>
+    <script src="{{asset('build/js/services/projectNote.js')}}"></script>
+    <script src="{{asset('build/js/services/user.js')}}"></script>
 @else
     <script src="{{elixir('js/all.js')}}"></script>
 @endif
