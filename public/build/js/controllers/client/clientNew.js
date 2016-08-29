@@ -1,5 +1,5 @@
 angular.module('app.controllers')
-    .controller('clientNewController', function ($scope, $location, Client) {
+    .controller('clientNewController', function ($scope, $location,Client) {
         $scope.client = new Client();
 
         $scope.save = function () {

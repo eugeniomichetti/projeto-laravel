@@ -1,26 +1,23 @@
 angular.module('app.services')
-    .service('ProjectNote', function ($resource, appConfig) {
+    .service('ProjectNote', function ($resource, $httpParamSerializer, appConfig) {
+        function transformData(data, headers) {
+            var response = appConfig.utils.transformResponse(data, headers);
+            return $httpParamSerializer(response);
+        }
+
         return $resource(appConfig.baseUrl + '/project/:id/note/:idNote',
             {
                 id: '@id',
                 idNote: '@idNote'
             }, {
-                update: {
-                    method: 'PUT'
+                save: {
+                    method: 'POST',
+                    transformRequest: transformData
                 },
-                search: {
-                    method: 'GET',
-                    transformResponse: function (data, headers) {
-                        var headersGetter = headers();
-                        if (headersGetter['content-type'] == 'application/json' || headersGetter['content-type'] == 'text/json') {
-                            var dataJson = JSON.parse(data);
-                            if (dataJson.hasOwnProperty('data')) {
-                                dataJson = dataJson.data[0];
-                            }
-                            return dataJson;
-                        }
-                        return data;
-                    }
-                }
+                update: {
+                    method: 'PUT',
+                    transformRequest: transformData
+
+                },
             });
     });

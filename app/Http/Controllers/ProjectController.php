@@ -91,16 +91,7 @@ class ProjectController extends Controller
         if ($this->checkProjectPermission($id) == false) {
             return ['error' => 'Acesso negado ao projeto!'];
         }
-        $project = $this->repository->find($id);
-        $project->owner_id = $request->input('owner_id');
-        $project->client_id = $request->input('client_id');
-        $project->name = $request->input('name');
-        $project->description = $request->input('description');
-        $project->progress = $request->input('progress');
-        $project->status = $request->input('status');
-        $project->due_date = $request->input('due_date');
-        $project->save();
-        return $project;
+        return $this->service->update($request->all(), $id);
     }
 
     /**
@@ -114,7 +105,7 @@ class ProjectController extends Controller
         if ($this->checkProjectPermission($id) == false) {
             return ['error' => 'Acesso negado ao projeto!'];
         }
-        $this->repository->find($id)->delete();
+        $this->repository->skipPresenter()->find($id)->delete();
     }
 
     private function checkProjectOwner($projectId)
@@ -129,9 +120,10 @@ class ProjectController extends Controller
         return $this->repository->hasMember($projectId, $userId);
     }
 
-    private function checkProjectPermission($projectId){
+    private function checkProjectPermission($projectId)
+    {
 
-        if($this->checkProjectOwner($projectId) || $this->checkProjectMember($projectId)){
+        if ($this->checkProjectOwner($projectId) || $this->checkProjectMember($projectId)) {
             return true;
         }
 
