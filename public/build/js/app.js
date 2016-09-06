@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngRoute', 'angular-oauth2', 'app.controllers', 'app.services', 'ui.bootstrap', 'ui.bootstrap.datepickerPopup', 'ui.bootstrap.tpls']);
+var app = angular.module('app', ['ngRoute', 'angular-oauth2', 'app.controllers', 'app.services', 'ui.bootstrap', 'ngFileUpload']);
 
 angular.module('app.controllers', ['ngMessages', 'angular-oauth2']);
 angular.module('app.services', ['ngResource']);
@@ -12,6 +12,9 @@ app.provider('appConfig', function () {
                 {value: 2, label: 'Iniciado'},
                 {value: 3, label: 'Finalizado'}
             ]
+        },
+        urls: {
+            projectFile: '/project/{{id}}/file/{{idFile}}'
         },
         utils: {
             transformResponse: function (data, headers) {
@@ -76,6 +79,22 @@ app.config(
                 templateUrl: 'build/views/client/remove.html',
                 controller: 'clientRemoveController'
             })
+            .when('/projects', {
+                templateUrl: 'build/views/project/list.html',
+                controller: 'projectListController'
+            })
+            .when('/projects/new', {
+                templateUrl: 'build/views/project/new.html',
+                controller: 'projectNewController'
+            })
+            .when('/projects/:id/edit', {
+                templateUrl: 'build/views/project/edit.html',
+                controller: 'projectEditController'
+            })
+            .when('/projects/:id/remove', {
+                templateUrl: 'build/views/project/remove.html',
+                controller: 'projectRemoveController'
+            })
             .when('/project/:id/notes', {
                 templateUrl: 'build/views/project-notes/list.html',
                 controller: 'projectNoteListController'
@@ -96,21 +115,21 @@ app.config(
                 templateUrl: 'build/views/project-notes/remove.html',
                 controller: 'projectNoteRemoveController'
             })
-            .when('/projects', {
-                templateUrl: 'build/views/project/list.html',
-                controller: 'projectListController'
+            .when('/project/:id/files', {
+                templateUrl: 'build/views/project-files/list.html',
+                controller: 'projectFileListController'
             })
-            .when('/projects/new', {
-                templateUrl: 'build/views/project/new.html',
-                controller: 'projectNewController'
+            .when('/project/:id/files/new', {
+                templateUrl: 'build/views/project-files/new.html',
+                controller: 'projectFileNewController'
             })
-            .when('/projects/:id/edit', {
-                templateUrl: 'build/views/project/edit.html',
-                controller: 'projectEditController'
+            .when('/project/:id/files/:idFile/edit', {
+                templateUrl: 'build/views/project-files/edit.html',
+                controller: 'projectFileEditController'
             })
-            .when('/projects/:id/remove', {
-                templateUrl: 'build/views/project/remove.html',
-                controller: 'projectRemoveController'
+            .when('/project/:id/files/:idFile/remove', {
+                templateUrl: 'build/views/project-files/remove.html',
+                controller: 'projectFileRemoveController'
             });
 
         OAuthProvider.configure({

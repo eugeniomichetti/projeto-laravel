@@ -14,9 +14,6 @@ use Prettus\Validator\Exceptions\ValidatorException;
 use ProjetoLaravel\Repositories\ProjectRepository;
 use ProjetoLaravel\Validators\ProjectValidator;
 
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Contracts\Filesystem\Factory;
-use ProjetoLaravel\Entities\Project;
 
 class ProjectService
 {
@@ -28,21 +25,11 @@ class ProjectService
      * @var ProjectValidator
      */
     protected $validator;
-    /**
-     * @var Filesystem
-     */
-    private $fileSystem;
-    /**
-     * @var Factory
-     */
-    private $storage;
 
-    public function __construct(ProjectRepository $repository, ProjectValidator $validator, Filesystem $fileSystem, Factory $factory, Factory $storage)
+    public function __construct(ProjectRepository $repository, ProjectValidator $validator)
     {
         $this->repository = $repository;
         $this->validator = $validator;
-        $this->fileSystem = $fileSystem;
-        $this->storage = $storage;
     }
 
     public function create(array $data)
@@ -73,13 +60,26 @@ class ProjectService
         }
     }
 
-    public function createFile(array $data)
+
+    public function checkProjectOwner($projectId)
     {
-        //Name, extension, projectId, description, file
-        $project = $this->repository->skipPresenter()->find($data['project_id']);
-        $projectFile = $project->files()->create($data);
+        $userId = \Authorizer::getResourceOwnerId();
+        return $this->repository->isOwner($projectId, $userId);
+    }
 
-        $this->storage->put($projectFile->id . "." . $data['extension'], $this->fileSystem->get($data['file']));
+    public function checkProjectMember($projectId)
+    {
+        $userId = \Authorizer::getResourceOwnerId();
+        return $this->repository->hasMember($projectId, $userId);
+    }
 
+    public function checkProjectPermission($projectId)
+    {
+
+        if ($this->checkProjectOwner($projectId) || $this->checkProjectMember($projectId)) {
+            return true;
+        }
+
+        return false;
     }
 }
