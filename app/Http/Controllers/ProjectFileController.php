@@ -3,8 +3,10 @@
 namespace ProjetoLaravel\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use ProjetoLaravel\Repositories\ProjectFileRepository;
 use ProjetoLaravel\Services\ProjectFileService;
+use Symfony\Component\Debug\Debug;
 
 class ProjectFileController extends Controller
 {
@@ -43,7 +45,12 @@ class ProjectFileController extends Controller
         if ($this->service->checkProjectPermission($id) == false) {
             return ['error' => 'Acesso negado ao projeto!'];
         }
-        return response()->download($this->service->getFilePath($id));
+        $filePath = $this->service->getFilePath($id);
+        $fileContent = file_get_contents($filePath);
+        $fileEncoded = base64_encode($fileContent);
+        return [
+            'file' => $fileEncoded
+        ];
     }
 
     /**

@@ -1,11 +1,12 @@
 angular.module('app.services')
-    .service('ProjectFile', function ($resource, $httpParamSerializer, appConfig) {
+    .service('ProjectFile', function ($resource, $httpParamSerializer, Url, appConfig) {
         function transformData(data, headers) {
             var response = appConfig.utils.transformResponse(data, headers);
             return $httpParamSerializer(response);
         }
 
-        return $resource(appConfig.baseUrl + '/project/:id/file/:idFile',
+        var url = appConfig.baseUrl + Url.getUrlResource(appConfig.urls.projectFile);
+        return $resource(url,
             {
                 id: '@id',
                 idFile: '@idFile'
@@ -18,6 +19,10 @@ angular.module('app.services')
                     method: 'PUT',
                     transformRequest: transformData
 
+                },
+                download: {
+                    method: 'GET',
+                    url: url + '/download'
                 },
             });
     });

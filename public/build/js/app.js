@@ -1,6 +1,7 @@
-var app = angular.module('app', ['ngRoute', 'angular-oauth2', 'app.controllers', 'app.services', 'ui.bootstrap', 'ngFileUpload']);
+var app = angular.module('app', ['ngRoute', 'angular-oauth2', 'app.controllers', 'app.directives', 'app.services', 'ui.bootstrap', 'ngFileUpload']);
 
 angular.module('app.controllers', ['ngMessages', 'angular-oauth2']);
+angular.module('app.directives', []);
 angular.module('app.services', ['ngResource']);
 
 app.provider('appConfig', function () {

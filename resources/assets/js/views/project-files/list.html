@@ -2,22 +2,24 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Listagem de notas do projeto</div>
+                <div class="panel-heading">Listagem de arquivos do projeto</div>
                 <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <th>Título</th>
-                        <th>Notas</th>
+                        <th>Nome</th>
+                        <th>Descrição</th>
+                        <th>Arquivo</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="o in projectNotes">
-                        <td>{{o.title}}</td>
-                        <td>{{o.note}}</td>
+                    <tr ng-repeat="o in projectFiles">
+                        <td>{{o.name}}</td>
+                        <td>{{o.description}}</td>
+                        <td><project-file-download id-file="{{o.id}}"></project-file-download></td>
                         <td><a type="button" class="btn btn-primary"
-                               ng-href="#/project/{{ o.project_id }}/notes/{{o.id}}/edit">Editar</a></td>
+                               ng-href="#/project/{{ o.project_id }}/files/{{o.id}}/edit">Editar</a></td>
                         <td><a type="button" class="btn btn-danger"
-                               ng-href="#/project/{{ o.project_id }}/notes/{{o.id}}/remove">Exluir</a></td>
+                               ng-href="#/project/{{ o.project_id }}/files/{{o.id}}/remove">Exluir</a></td>
                     </tr>
                     </tbody>
                 </table>

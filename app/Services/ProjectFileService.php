@@ -10,6 +10,7 @@ namespace ProjetoLaravel\Services;
 
 
 use Illuminate\Contracts\Validation\ValidationException;
+use Illuminate\Support\Facades\Log;
 use Prettus\Validator\Exceptions\ValidatorException;
 use ProjetoLaravel\Repositories\ProjectFileRepository;
 use ProjetoLaravel\Repositories\ProjectRepository;
@@ -17,6 +18,7 @@ use ProjetoLaravel\Validators\ProjectFileValidator;
 
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Contracts\Filesystem\Factory;
+use Symfony\Component\Debug\Debug;
 
 class ProjectFileService
 {
@@ -103,7 +105,6 @@ class ProjectFileService
             case 'local':
                 return $this->storage->getDriver()->getAdapter()->getPathPrefix() . '/' . $projectFile->id . '.' . $projectFile->extension;
         }
-
     }
 
     public function checkProjectOwner($projectFileId)
